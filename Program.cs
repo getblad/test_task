@@ -1,7 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.RegularExpressions;
 using static System.Console;
 
@@ -9,7 +6,7 @@ namespace DiskpartVolumeInfo
 {
     class Program
     {
-        private static void fileSearch()
+        private static void FileSearch()
         {
              try
              {
@@ -20,8 +17,7 @@ namespace DiskpartVolumeInfo
                      RedirectStandardOutput = true,
                      RedirectStandardError = true,
                      CreateNoWindow = true,
-                     UseShellExecute = false,
-                     WorkingDirectory = @"c:\"
+                     UseShellExecute = false
                  };
 
                  var process = new Process
@@ -35,7 +31,8 @@ namespace DiskpartVolumeInfo
                  var streamError = process.StandardError;
                  
                  
-                 streamWriter.WriteLine("cd " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+                 streamWriter.WriteLine("cd /d" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+                 //Using dir command as Find is only in Unix systems
                  streamWriter.WriteLine("dir /s /b /a-d \"*.txt\"");
                  streamWriter.WriteLine("exit");
                  process.WaitForExit(150000);
@@ -50,7 +47,6 @@ namespace DiskpartVolumeInfo
                  }
 
                  var filePaths = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
                  var fileCount = 0;
                  long totalSizeBytes = 0;
                  var smallestSizeBytes = long.MaxValue;
@@ -181,7 +177,7 @@ namespace DiskpartVolumeInfo
         static void Main(string[] args)
         {
             EvaluateMaxAndMinVolume();
-            fileSearch();
+            FileSearch();
         }
 
         private static long SizeToBytes(double value, string? unit)
